@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="pl">
+	<head>
+		<meta charset="utf-8">
+		<meta name="description" content="Prosta aplikacja do zarządzania zadaniami w czasie." />
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0" />
+		
+		<title>ZadaniaDoWykonania.pl</title>
+		
+		<script src="main.js"></script>
+		<script src="asset/alertNew.js"></script>
+		
+		<link rel='stylesheet' href='styles.css' type='text/css' />
+		<link rel='stylesheet' href='asset/alertNew.css' type='text/css' />
+		
+	</head>
+	<body class="bg_wave">
+		<section id="mainFlex">
+			<div id="main" class="mainColumn">
+				<header>
+					<h2>Dodaj nowe zadanie</h2>
+				</header>
+				<form method="POST" id="taskNew">
+					<div>
+						<input type="text" id="newTitle" name="newTitle" placeholder="Tytuł zadania" />
+					</div>
+					<textarea name="newContent" placeholder="Opis zadania..."></textarea>
+					<div class="valueAddView">
+						<div class="btnValueType">
+							<input type="radio" name="taskPriority" value="1" class="newType" id="taskPriority1" />
+							<label for="taskPriority1">Niski</label>
+						</div>
+						<div class="btnValueType">
+							<input type="radio" name="taskPriority" value="2" class="newType" id="taskPriority2" />
+							<label for="taskPriority2">Normalny</label>
+						</div>
+						<div class="btnValueType">
+							<input type="radio" name="taskPriority" value="3" class="newType" id="taskPriority3" />
+							<label for="taskPriority3">Podniesiony</label>
+						</div>
+						<div class="btnValueType">
+							<input type="radio" name="taskPriority" value="4" class="newType" id="taskPriority4" />
+							<label for="taskPriority4">Ważny</label>
+						</div>
+						<div class="btnValueType">
+							<input type="radio" name="taskPriority" value="5" class="newType" id="taskPriority5" />
+							<label for="taskPriority5">Bardzo ważny</label>
+						</div>
+					</div>
+					
+					<div id="categorySelect"></div>
+					
+					<div>
+						<input id="startDateSet" name="startDateSet" type="checkbox" value="1" />
+						<label for="startDateSet">Zadanie zaplanowane</label>
+					</div>
+					
+					<div class="hidden">
+						<label for="start_date">Data rozpoczęcia</label>
+						<input type="datetime" id="start_date" name="start_date" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}" />
+					</div>
+					
+					<div>
+						<label for="expiration_date">Data wygaśnięcia</label>
+						<input type="datetime" id="expiration_date" name="expiration_date" pattern="[0-9]{4}-[0-9]{2}-[0-9]{2} [0-9]{2}:[0-9]{2}" />
+					</div>
+					<div>
+						<button type="submit" class="addNewRow btn btnBlue">Dodaj</button>
+					</div>
+				</form>
+				
+				<button type="button" class="getContact btn btnFull btnGreen">Kontakt</button>
+				
+				<button type="button" class="getCookiesInfo btn btnBlue">Strona ta wykorzystuje pliki <b>Cookies</b> oraz <b>Local Storage</b>. Korzystając z tej strony bez zmiany ustawień dotyczących plików <b>Cookies</b> w Twojej przeglądarce internetowej jest traktowane jako zgoda na ich zapis oraz wykorzystanie. Szczegóły związane z wykorzystaniem i przetwarzaniem Twoich danych znajdziesz w polityce prywatności klikając na ten przycisk.</button>
+			</div>
+			<div id="tasksTable" class="mainColumn">
+				<div id="tasksWaiting"><h3>Oczekujące</h3><div class="tasksList"></div></div>
+				<div id="tasksInProgress"><h3>W trakcie realizacji</h3><div class="tasksList"></div></div>
+				<div id="tasksToCheck"><h3>Do sprawdzenia</h3><div class="tasksList"></div></div>
+				<div id="tasksCompleted"><h3>Zakończone</h3><div class="tasksList"></div></div>
+			</div>
+			<div id="mainContent" class="mainColumn">
+				<header>
+					<h1>ZadaniaDoWykonania.pl<span id="version-text"></span></h1>
+				</header>
+				<div>
+					<!-- <button type="button" class="getTimeWork btn btnLightBlue">Czas pracy</button> -->
+					<button type="button" class="editNote btn btnLightBlue">Notatki</button>
+					<button type="button" class="editToDo btn btnLightBlue">ToDo</button>
+					<button type="button" class="getHelp btn btnGreen">Pomoc</button>
+					
+					<a href="https://www.facebook.com/ZadaniaDoWykonaniaPl/" target="_blank" class="btn btnBlue">Facebook</a>
+				</div>
+				<div>
+					<button type="button" class="dataDownload btn">Pobierz</button>
+					<button type="button" class="dataUpload btn">Wczytaj</button>
+					<button type="button" class="dataDelete btn btnRed">Wyczyść</button>
+				</div>
+				<div id="showDetails" class="infoArea"></div>
+				<div id="cookiesInfo" class="infoArea infoShow">
+					<h3>Pliki Cookies</h3>
+					<p>Strona, ta jak większość teraźniejszych stron wykorzystuje Cookies, tzw. ciasteczka w celu poprawnego działania systemu. Jeśli nie akceptujesz wykorzystywania cookies na swoim urządzeniu zmień ustawienia swojej przegladarki. Cookies, to informacje tekstowe zapisane na Twoim urządzeniu, które mogą być wykorzystywane na tej stronie. Wyłączenie plików cookies może spowodować błędne działanie systemu.</p>
+				</div>
+				<div id="helpInfo" class="infoArea">
+					<h3>Jak korzystać</h3>
+					<h4>Zadania</h4>
+					<p>Dodawanie zadania odbywa się poprzez formularz po lewej stronie. Dodane zadanie będzie w kolumnie oczekujące.</p>
+				</div>
+				<div id="contactInfo" class="infoArea">
+					<h3>Kontakt</h3>
+					<p>Podoba Ci się projekt, który tworzę? Masz ciekawy pomysł, który można zastosować do tego projektu? Wystąpił błąd, którego nie dostrzegłem? Śmiało, napisz proszę o tym.</p>
+					<p>
+						
+					</p>
+					
+					<form method="POST" action="a.php" id="contactForm">
+						<input name="firstname" type="text" placeholder="Imię" required/>
+						<input name="email" type="email" placeholder="E-mail" required/>
+						<textarea name="message" placeholder="Wiadomość..." required></textarea>
+						<label for="permissionSet">Wyrażam zgodę na przetwarzanie moich danych osobowych w postaci imienia (nazwy, którą podasz w tym polu) oraz adresu email w celu kontaktu i udzielenia ewentualnej odpowiedzi przez ZadaniaDoWykonania.pl, które zostaną przesłane za pośrednictwem tego formularza.</label>
+						<input type="checkbox" name="permission" id="permissionSet" value="1" required/>
+						<button type="submit" class="btn btnFull btnBlue">Wyślij</button>
+					</form>
+				</div>
+			</div>
+		</section>
+	</body>
+</html>
