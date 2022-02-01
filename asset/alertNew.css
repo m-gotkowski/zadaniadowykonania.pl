@@ -57,6 +57,7 @@
 	list-style: none;
 }
 #alertNew > div > p {
+	color: #2B4035;
 	text-align: left;
 	padding: 0px 20px;
 }
