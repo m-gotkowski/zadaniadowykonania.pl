@@ -52,7 +52,7 @@ columnIdToName[columnsName[3]["cName"]] = columnsName[3]["name"];
 
 const categoryItems = [
 	{
-		'value': null,
+		'value': "",
 		'name': 'Wbierz...',
 		'color': null,
 		'position': 0
@@ -846,8 +846,24 @@ function createSelectCategory () {
 
 
 function showSelectCategory () {
-	if (tasksObj.settings.category != null) {
-		console.log("Wybrano: " + tasksObj.settings.category);
+	document.querySelectorAll("#tasksTable .tasksList .taskItem").forEach(function(e) {
+		e.classList.remove("taskItem-hidden");
+	});
+	
+	console.log(tasksObj.settings.category);
+	
+	if (tasksObj.settings.category != "") {
+		for (let pKey in tasksObj) {
+			const tObj = tasksObj[pKey];
+			
+			if ((pKey == "waiting" || pKey == "inProgress" || pKey == "toCheck") && tObj.length > 0) {
+				tObj.forEach(function(tItem) {
+					if (tItem.category != tasksObj.settings.category) {
+						document.getElementById("task" + tItem.id).classList.add("taskItem-hidden");
+					}
+				});
+			}
+		}
 	}
 }
 
@@ -1441,97 +1457,4 @@ function dtPicker (objDT) {
 		};
 	}
 }
-
-/*
-
-function alertNew (alertObj) {
-	/ *
-	v: 1.1
-	
-	alertObj = {
-		'title': '',
-		'message': '',
-		'style': 'default', // default, success, error
-		'radius': false,
-		'buttonSubmit': 'Ok',
-		'buttonCancel': 'Cancel',
-		'fnCallback': null
-	};
-	
-	* /
-	
-	if (typeof alertObj == "undefined" || alertObj == undefined || alertObj == null) {
-		alertObj = {};
-	}
-	
-	let div;
-	
-	if (document.getElementById("alertNew") == null) {
-		div = document.createElement("div");
-		div.id = "alertNew";
-	}
-	else {
-		div = document.getElementById("alertNew");
-	}
-	
-	let divContent = document.createElement("div");
-    let pm = document.createElement("p");
-	pm.innerHTML = (alertObj.message == undefined) ? "" : alertObj.message;
-	let btnSubmit = document.createElement("button");
-	btnSubmit.innerHTML = (alertObj.buttonSubmit == undefined) ? "Ok" : alertObj.buttonSubmit;
-	btnSubmit.onclick = function(){
-		
-		if (typeof alertObj.fnCallback == "function") {
-			alertObj.fnCallback();
-		}
-		
-		if (this.parentNode.parentNode.childElementCount == 1) {
-			this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
-		}
-		else {
-			this.parentNode.parentNode.removeChild(this.parentNode);
-		}
-		
-		return false;
-	};
-	
-	if (alertObj.radius === true) {
-		divContent.classList.add("alertNewRadius");
-	}
-	
-	divContent.classList.add((alertObj.style == undefined || alertObj.style == "" || alertObj.style == null) ? "default" : alertObj.style);
-	
-	let divClose = document.createElement("button");
-	divClose.classList.add("alertClose");
-	divClose.innerText = "X";
-	divClose.onclick = function(){
-		if (document.getElementById("alertNew").childElementCount == 1) {
-			document.body.removeChild(document.getElementById("alertNew"));
-		}
-		else {
-			this.parentNode.parentNode.parentNode.removeChild(this.parentNode.parentNode);
-		}
-		
-		return false;
-	};
-	
-	if (alertObj.title != undefined && alertObj.title != "") {
-		let divTitle = document.createElement("div");
-		divTitle.classList.add("alertTitle");
-		divTitle.innerHTML = alertObj.title;
-		
-		divTitle.appendChild(divClose);
-		divContent.appendChild(divTitle);
-	}
-	
-	divContent.appendChild(pm);
-	divContent.appendChild(btnSubmit);
-	
-	div.appendChild(divContent);
-	
-	document.body.appendChild(div);
-}
-
-*/
-
 
