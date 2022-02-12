@@ -1,5 +1,5 @@
 
-const versionNum = "1.0.4 beta";
+const versionNum = "1.0.5 beta";
 const localName = "simpleTask";
 const timeAlert = 300000; // 5 min
 const zeroPad = (num, places) => String(num).padStart(places, "0");
@@ -16,7 +16,9 @@ const tasksObj = {
 		"text": null
 	},
 	"category": [],
-	"settings": {}
+	"settings": {
+		"category": null
+	}
 };
 
 const columnsName = [
@@ -54,24 +56,6 @@ const categoryItems = [
 		'name': 'Wbierz...',
 		'color': null,
 		'position': 0
-	},
-	{
-		'value': 'work',
-		'name': 'Praca',
-		'color': null,
-		'position': null
-	},
-	{
-		'value': 'project',
-		'name': 'Projekt',
-		'color': null,
-		'position': null
-	},
-	{
-		'value': 'life',
-		'name': 'Życie',
-		'color': null,
-		'position': null
 	},
 	{
 		'value': 'other',
@@ -396,6 +380,16 @@ document.addEventListener('DOMContentLoaded',function() { // waiting for documen
 	};
 	
 	
+	// Settings
+	let buttonSettings = document.querySelector(".editSettings");
+	buttonSettings.onclick = function(){
+		classNameRemove(".infoArea", "infoShow");
+		document.getElementById("settingsArea").innerHTML = "";
+		document.getElementById("settingsArea").classList.add("infoShow");
+		
+		createSelectCategory();
+	};
+	
 	// ToDo list
 	let buttonToDo = document.querySelector(".editToDo");
 	buttonToDo.onclick = function(){
@@ -592,6 +586,7 @@ function showTasks (tObj) {
 					taskItem_title.appendChild(taskItem_title_text);
 					let taskItem_priority = document.createElement("span");
 					taskItem_priority.classList.add("taskPriority" + tObjTmp[j].priority);
+					// taskItem_priority.title = "title category";
 					let taskItem_projekt = document.createElement("h6");
 					let taskItem_header_dates = document.createElement("div");
 					taskItem_header_dates.classList.add("taskItem-header_dates");
@@ -766,6 +761,7 @@ function generateCategorySelect (cItems) {
 				
 				generateCategorySelect(tasksObj.category);
 				
+				createSelectCategory();
 				
 				if (typeof(Storage) !== "undefined") {
 					window.localStorage.setItem(localName, JSON.stringify(tasksObj));
@@ -800,6 +796,58 @@ function resetValue (nodeObj) {
 				nodeObj[i].value = "";
 			}
 		}
+	}
+}
+
+
+function createSelectCategory () {
+	let settingsAreaBox;
+	
+	if (document.getElementById("settingsArea").classList.contains("infoShow")) {
+		
+		if (document.getElementById("settingsArea-box") == null) {
+			settingsAreaBox = document.createElement("div");
+			settingsAreaBox.id = "settingsArea-box";
+		}
+		else {
+			settingsAreaBox = document.getElementById("settingsArea-box");
+			settingsAreaBox.innerHTML = "";
+		}
+		
+		let selectCategory = document.createElement("select");
+		
+		let selectCategoryTitile = document.createElement("h3");
+		selectCategoryTitile.innerText = "Wybierz kategorię";
+		
+		if (tasksObj.category.length > 0) {
+			tasksObj.category.forEach(function(item) {
+				let option = document.createElement("option");
+				option.value = item["value"];
+				option.textContent = item["name"];
+				
+				if (tasksObj.settings.category == item["value"]) {
+					option.selected = true;
+				}
+				
+				selectCategory.appendChild(option);
+			});
+		}
+		
+		selectCategory.addEventListener("change", function() {
+			tasksObj.settings.category = this.value;
+			showSelectCategory();
+		});
+		
+		settingsAreaBox.appendChild(selectCategoryTitile);
+		settingsAreaBox.appendChild(selectCategory);
+		document.getElementById("settingsArea").appendChild(settingsAreaBox);
+	}
+}
+
+
+function showSelectCategory () {
+	if (tasksObj.settings.category != null) {
+		console.log("Wybrano: " + tasksObj.settings.category);
 	}
 }
 
